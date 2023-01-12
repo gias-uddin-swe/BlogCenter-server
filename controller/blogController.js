@@ -151,7 +151,6 @@ exports.updateComment = catchAsync(async (req, res, next) => {
     message: "successfully updated this comment",
   });
 });
-
 exports.postReaction = catchAsync(async (req, res, next) => {
   const reaction = req.body;
   if (!reaction && typeof reaction === "string") {
@@ -174,7 +173,6 @@ exports.postReaction = catchAsync(async (req, res, next) => {
     response,
   });
 });
-
 // update reaction
 exports.updateReaction = catchAsync(async (req, res, next) => {
   const { reaction, blogId, userId } = req.body;
@@ -220,5 +218,36 @@ exports.updateReaction = catchAsync(async (req, res, next) => {
   });
 });
 
+// update view count on every single hit in this route (10 second);
+exports.viewCount = catchAsync(async (req, res, next) => {
+  const blogId = req.params.blogId;
+  const previousViews = parseInt(req.body.views);
+  const currentViews = previousViews + 1;
+  console.log(!previousViews);
+  if (!previousViews) {
+    return res.status(405).json({
+      success: false,
+      message: "need to  previous views",
+    });
+  }
+  const response = await Blog.updateOne(
+    { _id: blogId },
+    {
+      $set: {
+        views: currentViews,
+      },
+    }
+  );
+  if (response.modifiedCount <= 0) {
+    return res.status(200).json({
+      success: false,
+      message: "can not update the views please try again leter",
+    });
+  }
 
-
+  res.status(200).json({
+    success: true,
+    message: "views updated",
+    response,
+  });
+});

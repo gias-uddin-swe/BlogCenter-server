@@ -15,12 +15,6 @@ const blogSchema = mongoose.Schema({
   blogBanner: {
     type: String,
     required: [true, "please provide a valid blog banner image link"],
-    // validate: validator.isURL({
-    //   message: "Must be a Valid blog banner image URL",
-    //   protocols: ["http", "https", "ftp"],
-    //   require_tld: true,
-    //   require_protocol: true,
-    // }),
     validate: {
       validator: function (v) {
         return /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/.test(
@@ -32,10 +26,10 @@ const blogSchema = mongoose.Schema({
   },
 
   author: {
-    // userId: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   required: [true, "Please insert the user id!"],
-    // },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: [true, "Please insert the user id!"],
+    },
     email: {
       type: String,
       required: [true, "Please provide your email!"],
@@ -49,38 +43,8 @@ const blogSchema = mongoose.Schema({
 
   views: {
     type: String,
+    default: 1,
   },
-  comments: [
-    {
-      userId: {
-        type: mongoose.Types.ObjectId,
-        ref: "Profile",
-      },
-      comment: {
-        type: String,
-        required: [true, "please type a valid comment about this blog"],
-      },
-      // _id: false,
-      // _id: true,
-      index: {
-        type: mongoose.Types.ObjectId,
-        unique: true,
-      },
-    },
-  ],
-  reaction: [
-    {
-      userEmail: {
-        type: String,
-        ref: "Profile",
-      },
-      react: {
-        type: String,
-        required: [true, "please type a valid reaction about this blog"],
-      },
-      _id: false,
-    },
-  ],
   date: {
     type: Date,
     default: Date.now(),
