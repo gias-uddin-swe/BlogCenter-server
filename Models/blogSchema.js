@@ -52,15 +52,20 @@ const blogSchema = mongoose.Schema({
   },
   comments: [
     {
-      userEmail: {
-        type: String,
+      userId: {
+        type: mongoose.Types.ObjectId,
         ref: "Profile",
       },
       comment: {
         type: String,
         required: [true, "please type a valid comment about this blog"],
       },
-      _id: false,
+      // _id: false,
+      // _id: true,
+      index: {
+        type: mongoose.Types.ObjectId,
+        unique: true,
+      },
     },
   ],
   reaction: [
@@ -92,7 +97,7 @@ module.exports = Blog;
 //   "description": "description",
 //   "blogBanner":
 //     "https://github.com/Programming-Hero1/koncept-krackerz-server/blob/staging/routers/userRouter.js",
-//   "author": [{ "email": "user@example.com", "userName": "John" }],
+//   "author": { "email": "user@example.com", "userName": "John" },
 //   "views": "0",
 //   "comments": [{ "comment": "hello test", "userEmail": "gias@gmail.com" }],
 //   "reaction": [{ "react": "love", "userEmail": "gias@gmail.com" }],
