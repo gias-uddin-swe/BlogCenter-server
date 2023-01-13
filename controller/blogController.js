@@ -217,7 +217,6 @@ exports.updateReaction = catchAsync(async (req, res, next) => {
     message: "successfully updated this comment",
   });
 });
-
 // update view count on every single hit in this route (10 second);
 exports.viewCount = catchAsync(async (req, res, next) => {
   const blogId = req.params.blogId;
@@ -244,10 +243,17 @@ exports.viewCount = catchAsync(async (req, res, next) => {
       message: "can not update the views please try again leter",
     });
   }
-
   res.status(200).json({
     success: true,
     message: "views updated",
     response,
   });
+});
+
+exports.replyComment = catchAsync(async (req, res, next) => {
+  const reply = req.body.reply;
+  const commentId = req.params.commentId;
+  const userId = req.body.userId;
+
+  console.log(reply, commentId);
 });

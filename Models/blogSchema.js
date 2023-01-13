@@ -7,7 +7,6 @@ const blogSchema = mongoose.Schema({
     type: String,
     required: [true, "please write the blog titile"],
   },
-
   description: {
     type: String,
     required: [true, "please write the blog description"],
@@ -24,7 +23,6 @@ const blogSchema = mongoose.Schema({
       message: (props) => `${props.value} is not a valid link!`,
     },
   },
-
   author: {
     userId: {
       type: mongoose.Schema.Types.ObjectId,

@@ -14,9 +14,8 @@ router.get("/blogComments/:blogId", blogController.blogComments);
 router.post("/postReaction", blogController.postReaction);
 // update  reaction by using reaction _id and blog and userId
 router.patch("/updateReaction/:reactedId", blogController.updateReaction);
-
 // blog readCount/view every read time
-
 router.put("/viewCount/:blogId", blogController.viewCount);
-
+// comment replay handle route based one single comment
+router.put("/replyComment",blogController.replyComment)
 module.exports = router;
