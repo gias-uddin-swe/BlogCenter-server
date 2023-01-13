@@ -251,9 +251,46 @@ exports.viewCount = catchAsync(async (req, res, next) => {
 });
 
 exports.replyComment = catchAsync(async (req, res, next) => {
-  const reply = req.body.reply;
   const commentId = req.params.commentId;
-  const userId = req.body.userId;
+  const { replyText, replierUId, replierName, replierUName } = req.body || {};
+  if (
+    !typeof replierName === "string" &&
+    !typeof replyText === "string" &&
+    !typeof replierUName === "string" &&
+    !ObjectId.isValid(commentId)
+  ) {
+    return res.status(405).json({
+      success: false,
+      message: "bad request for update comment",
+    });
+  }
+  // console.log(
+  //     !typeof replierName === "string" &&
+  //     !typeof replyText === "string" &&
+  //     !typeof replierUName === "string" &&
+  //     !ObjectId.isValid(commentId)
+  // );
+  const response = await Comments.updateOne(
+    { _id: commentId },
+    {
+      $push: {
+        replays: req.body,
+      },
+    }
+  );
 
-  console.log(reply, commentId);
+  if (response.modifiedCount <= 0) {
+    return res.status(405).json({
+      response,
+      success: false,
+      message: "can not reply for this post now please try again",
+    });
+  }
+  res.status(200).json({
+    response,
+    success: true,
+    message: "successfully updated/posted new reply for this comment",
+  });
+
+  // console.log(response);
 });

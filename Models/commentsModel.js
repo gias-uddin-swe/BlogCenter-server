@@ -23,6 +23,14 @@ const commentSchema = mongoose.Schema({
     required: [true, "please  add your blog id also"],
     ref: "Blog",
   },
+  replays: [
+    {
+      replyText: String,
+      replierUId: mongoose.Types.ObjectId,
+      replierName: String,
+      replierUName: String,
+    },
+  ],
   date: {
     type: Date,
     default: Date.now(),
