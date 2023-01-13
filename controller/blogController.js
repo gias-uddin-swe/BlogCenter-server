@@ -294,11 +294,22 @@ exports.replyComment = catchAsync(async (req, res, next) => {
 
   // console.log(response);
 });
-
+//update the reply based ont he single comment
 exports.updateReply = catchAsync(async (req, res, next) => {
   const { replierUId, replyText, commentId } = req.body || {};
   const replayId = req.params.replayId;
 
+  if (
+    !ObjectId.isValid(replayId) &&
+    !ObjectId.isValid(replierUId) &&
+    !ObjectId.isValid(commentId) &&
+    !typeof replyText === "string"
+  ) {
+    return res.status(403).json({
+      message: "bad request for update the reply",
+      success: false,
+    });
+  }
   const response = await Comments.updateOne(
     {
       _id: commentId,
@@ -310,5 +321,18 @@ exports.updateReply = catchAsync(async (req, res, next) => {
       },
     }
   );
+
+  if (response.modifiedCount <= 0) {
+    return res.status(200).json({
+      message: "can not update the reply try agin later",
+      success: false,
+    });
+  }
+
+  res.status(200).json({
+    message: "successfully update your reply",
+    response,
+    success: true,
+  });
   console.log(response);
 });
