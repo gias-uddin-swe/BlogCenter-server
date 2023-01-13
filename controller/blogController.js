@@ -294,3 +294,21 @@ exports.replyComment = catchAsync(async (req, res, next) => {
 
   // console.log(response);
 });
+
+exports.updateReply = catchAsync(async (req, res, next) => {
+  const { replierUId, replyText, commentId } = req.body || {};
+  const replayId = req.params.replayId;
+
+  const response = await Comments.updateOne(
+    {
+      _id: commentId,
+      "replays._id": replayId,
+    },
+    {
+      $set: {
+        "replays.$.replyText": replyText,
+      },
+    }
+  );
+  console.log(response);
+});

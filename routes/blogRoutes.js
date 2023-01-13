@@ -19,5 +19,5 @@ router.put("/viewCount/:blogId", blogController.viewCount);
 // comment replay handle route based one single comment
 router.put("/replyComment/:commentId", blogController.replyComment);
 
-router.put("/updateReply/:replayId", blogController.replyComment);
+router.put("/updateReply/:replayId", blogController.updateReply);
 module.exports = router;
